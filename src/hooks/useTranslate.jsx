@@ -16,9 +16,7 @@ const useTranslate = (sourceText, selectedLanguage) => {
                     model: 'gpt-4o-mini',
                     messages:[
                         {role: 'user', content: `You will be provided with a sentence. Your tasks are to:
-                        1. Read the sentence: ${sourceText}.
-                        2. Detect what language the sentence is in.
-                        3. Translate the sentence into ${selectedLanguage}.
+                        1. Read the sentence: ${sourceText} and Detect what language the sentence is in. 3. Translate the sentence into ${selectedLanguage}.
                         Do not return anything other than the translated sentence.`},
                     ]
                 })
