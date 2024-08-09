@@ -1,6 +1,3 @@
-
-
-
 export default function TextArea({id,value,onChange,placeholder}) {
 return <textarea
         rows={5}

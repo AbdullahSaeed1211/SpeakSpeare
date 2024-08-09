@@ -6,8 +6,8 @@ export default function LanguageSelector({
   languages,
 }) {
   return (
-    <span className="cursor-pointer rounded-full space-x-1 pl-2 bg-black flex items-center flex-row">
-      <IconLanguage size={20} />
+    <span className="cursor-pointer rounded-full space-x-1 pl-2 bg-black/90 flex items-center flex-row">
+      <IconLanguage size={20} className="text-white" />
       <select
         value={selectedLanguage}
         onChange={(e) => setSelectedLanguage(e.target.value)}

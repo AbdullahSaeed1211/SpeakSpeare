@@ -1,12 +1,19 @@
 import { useEffect, useState, useCallback } from 'react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const useTranslate = (sourceText, selectedLanguage) => {
-  const [targetText, setTargetText] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+// Define types for the hook's return values
+interface UseTranslateReturn {
+  targetText: string;
+  isLoading: boolean;
+  error: string | null;
+}
 
-  const handleTranslate = useCallback(async (text) => {
+const useTranslate = (sourceText: string, selectedLanguage: string): UseTranslateReturn => {
+  const [targetText, setTargetText] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleTranslate = useCallback(async (text: string) => {
     try {
       setIsLoading(true);
       setError(null);
@@ -19,12 +26,12 @@ const useTranslate = (sourceText, selectedLanguage) => {
 
       const genAI = new GoogleGenerativeAI(apiKey);
       const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-      const prompt = `Translate the following text to ${selectedLanguage}: ${text} reply only with the translated text.`;
+      const prompt = `Translate the following text to ${selectedLanguage}: ${text} \n reply only with the translated text`;
 
       const result = await model.generateContent(prompt);
 
       // Extract the translated text from the response
-      if (result.response && result.response.text) {
+      if (result.response?.text) {
         setTargetText(result.response.text());
       } else {
         setTargetText('Translation not available.');

@@ -11,12 +11,10 @@ import {
 import SpeechRecognitionComponent from "@/components/SpeechRecognition/SpeechRecognition";
 import TextArea from "@/components/Input/TextArea";
 import FileUpload from "@/components/Input/FileUpload";
-import LinkPaste from "@/components/Input/LinkPaste";
 import LanguageSelector from "@/components/Input/LanguageSelector";
 import useTranslate from "@/hooks/useTranslate";
 import { rtfToText } from "@/utils/rtfToText";
 
-import SvgDecorations from "@/components/SvgDecorations";
 import CategoryLinks from "@/components/CategoryLinks";
 
 const Home: React.FC = () => {
@@ -32,9 +30,14 @@ const Home: React.FC = () => {
     "Japanese",
   ]);
   const [selectedLanguage, setSelectedLanguage] = useState<string>("Spanish");
+  const [like, setLike] = useState<boolean>(false);
+  const [dislike, setDislike] = useState<boolean>(false);
 
   // Usage
-const { targetText, isLoading, error } = useTranslate(sourceText, selectedLanguage);
+  const { targetText, isLoading, error } = useTranslate(
+    sourceText,
+    selectedLanguage
+  );
 
   const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -49,17 +52,6 @@ const { targetText, isLoading, error } = useTranslate(sourceText, selectedLangua
     }
   };
 
-  const handleLinkPaste = async (e: ChangeEvent<HTMLInputElement>) => {
-    const link = e.target.value;
-    try {
-      const response = await fetch(link);
-      const data = await response.text();
-      setSourceText(data);
-    } catch (error) {
-      console.error("Error fetching link content:", error);
-    }
-  };
-
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(targetText);
     setCopied(true);
@@ -67,11 +59,15 @@ const { targetText, isLoading, error } = useTranslate(sourceText, selectedLangua
   };
 
   const handleLike = () => {
-    // Implement like logic
+    setLike(true);
+    setDislike(false);
+    // implement logic here to save likes (e.g., to a server or local storage)
   };
 
   const handleDislike = () => {
-    // Implement dislike logic
+    setDislike(true);
+    setLike(false);
+    // implement logic here to save dislikes (e.g., to a server or local storage)
   };
 
   const handleFavorite = () => {
@@ -121,12 +117,12 @@ const { targetText, isLoading, error } = useTranslate(sourceText, selectedLangua
                       />
                       <IconVolume
                         size={22}
+                        className="text-[#ffffff]"
                         onClick={() => handleAudioPlayback(sourceText)}
                       />
                       <FileUpload handleFileUpload={handleFileUpload} />
-                      <LinkPaste handleLinkPaste={handleLinkPaste} />
                     </span>
-                    <span className="text-sm pr-4">
+                    <span className="text-sm pr-4 text-white">
                       {sourceText.length} / 2000
                     </span>
                   </div>
@@ -148,29 +144,42 @@ const { targetText, isLoading, error } = useTranslate(sourceText, selectedLangua
                       />
                       <IconVolume
                         size={22}
+                        className="text-[#ffffff]"
                         onClick={() => handleAudioPlayback(targetText)}
                       />
                     </span>
                     <div className="flex flex-row items-center space-x-2 pr-4 cursor-pointer">
-                      <IconCopy size={22} onClick={handleCopyToClipboard} />
+                      <IconCopy
+                        size={22}
+                        className="text-[#ffffff]"
+                        onClick={handleCopyToClipboard}
+                      />
                       {copied && (
                         <span className="text-xs text-green-500">Copied!</span>
                       )}
-                      <IconThumbUp size={22} onClick={handleLike} />
-                      <IconThumbDown size={22} onClick={handleDislike} />
+                      <IconThumbUp
+                        size={22}
+                        onClick={handleLike}
+                        className={like ? "text-blue-500" : "text-white"}
+                      />
+                      <IconThumbDown
+                        size={22}
+                        onClick={handleDislike}
+                        className={dislike ? "text-red-500" : "text-white"}
+                      />
                       <IconStar
                         size={22}
                         onClick={handleFavorite}
-                        className={favorite ? "text-yellow-500" : ""}
+                        className={favorite ? "text-yellow-500" : "text-white"}
                       />
                     </div>
                   </div>
                 </div>
               </div>
-
-              <SvgDecorations />
             </div>
-
+            <h2 className="mt-12 text-2xl font-bold text-neutral-200">
+            Master Speaking & Writing: Choose a Category and Start with AI-Generated Prompts
+            </h2>
             <CategoryLinks />
           </div>
         </div>
