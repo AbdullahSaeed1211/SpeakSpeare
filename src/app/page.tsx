@@ -33,7 +33,8 @@ const Home: React.FC = () => {
   ]);
   const [selectedLanguage, setSelectedLanguage] = useState<string>("Spanish");
 
-  const targetText = useTranslate(sourceText, selectedLanguage);
+  // Usage
+const { targetText, isLoading, error } = useTranslate(sourceText, selectedLanguage);
 
   const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
